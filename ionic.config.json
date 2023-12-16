@@ -1,0 +1,7 @@
+{
+  "name": "BoulouPlug",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
