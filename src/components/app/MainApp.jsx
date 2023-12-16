@@ -7,34 +7,10 @@ import { IoStatsChart } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { Page,usePageManager} from "./Page";
 import SwitchFunctionality from "./SwitchFunctionality";
+import Api from "./Api";
 const defaultTabValue = [true,false,false,false]
 const MainApp = ()=>{
 const [activeTab,setActiveTab] = useState(0)
-
-
-var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-var urlencoded = new URLSearchParams();
-urlencoded.append("developerId", "-Nlm3ZA2Xaf1K4W8rMGy");
-urlencoded.append("email", "anjaharen@gmail.com");
-urlencoded.append("deviceId", "bfc988f7c703c0d698hjlc");
-urlencoded.append("switch_status", "ON");
-
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: urlencoded,
-  redirect: 'follow'
-};
-
-fetch("https://us-central1-boulou-functions-for-devs.cloudfunctions.net/boulou_switch_device", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
-
-
-
 return(
     <div className={mainStyles.tabContainer}>
         <div className={mainStyles.tabHeader}>
