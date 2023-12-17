@@ -5,18 +5,27 @@ import { IoMdPower } from "react-icons/io";
 import { MdOutlineTimer } from "react-icons/md";
 import { IoStatsChart } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
+import { LuPlug } from "react-icons/lu";
+import { GoInfo } from "react-icons/go";
+import PlugModular from "./PlugModular";
 import { Page,usePageManager} from "./Page";
+import TimerFunctionality from "./TimerFunctionality";
 import SwitchFunctionality from "./SwitchFunctionality";
+import StatFunctionality from "./StatFunctionality";
+import ErrorManager from "./ErrorManager";
 import Api from "./Api";
 const defaultTabValue = [true,false,false,false]
 const MainApp = ()=>{
 const [activeTab,setActiveTab] = useState(0)
+const [activePlugMod,setActivePlugMod] = useState(false)
+ErrorManager.init();
 return(
     <div className={mainStyles.tabContainer}>
+        {activePlugMod&&<PlugModular active={activePlugMod} setActive={setActivePlugMod}/>}
         <div className={mainStyles.tabHeader}>
             <div className={mainStyles.title}>
                 <Page index={0} actualActive={activeTab}>
-                    Interupteur
+                    Interrupteur
                 </Page>
                 <Page index={1}  actualActive={activeTab}>
                     Minuteur
@@ -26,25 +35,37 @@ return(
                 </Page>
                 <Page index={3}  actualActive={activeTab}>
                     Options
-                </Page>
+                </Page>   
             </div>
-            
+            <div className={mainStyles.plugContainer}>
+                <div className={mainStyles.plugButton} onClick={()=>{
+                    setActivePlugMod(true)
+                }}>
+                    <LuPlug size={20}/> Prise1
+                </div>
+            </div>
         </div>
         <div className={mainStyles.tabBody}>
             <Page index={0} actualActive={activeTab}>
                 <SwitchFunctionality/>
             </Page>
             <Page index={1}  actualActive={activeTab}>
-                MINUTEUR
+                <TimerFunctionality setActiveTab={setActiveTab}/>
             </Page>
             <Page index={2}  actualActive={activeTab}>
-                STAT
+                <StatFunctionality bool={false}/>
             </Page>
             <Page index={3}  actualActive={activeTab}>
-                SETTINGS
+                <StatFunctionality/>
             </Page>
+            {ErrorManager.error[1]&&<div className={mainStyles.errorModal} onClick={()=>{ErrorManager.setError(["erreur",false])}}>
+                <div className={mainStyles.errorMess}>
+                    {ErrorManager.error[0]}
+                </div>
+            </div>}
         </div>
         <div className={mainStyles.tabFooter}>
+            
             <FooterButton activeTab={activeTab} setActiveTab={setActiveTab} state={0} active={activeTab[0]}/>
             <FooterButton activeTab={activeTab} setActiveTab={setActiveTab} state={1} active={activeTab[1]}/>
             <FooterButton activeTab={activeTab} setActiveTab={setActiveTab} state={2} active={activeTab[2]}/>
@@ -61,7 +82,7 @@ const FooterButton = ({children,activeTab,setActiveTab,state=0})=>{
             <div className={active?mainStyles.footerButtonActive:mainStyles.footerButton} onClick={()=>{
                 setActiveTab(state)
             }}>
-                <IoMdPower size={40} className={active?mainStyles.footerButtonColorActive:mainStyles.footerButtonColor}/>
+                <IoMdPower size={30} className={active?mainStyles.footerButtonColorActive:mainStyles.footerButtonColor}/>
             </div>
         )
     }
@@ -70,7 +91,7 @@ const FooterButton = ({children,activeTab,setActiveTab,state=0})=>{
             <div className={active?mainStyles.footerButtonActive:mainStyles.footerButton} onClick={()=>{
                 setActiveTab(state)
             }}>
-            <MdOutlineTimer size={40} className={active?mainStyles.footerButtonColorActive:mainStyles.footerButtonColor} />
+            <MdOutlineTimer size={30} className={active?mainStyles.footerButtonColorActive:mainStyles.footerButtonColor} />
             </div>
         )
     }
@@ -79,7 +100,7 @@ const FooterButton = ({children,activeTab,setActiveTab,state=0})=>{
             <div className={active?mainStyles.footerButtonActive:mainStyles.footerButton} onClick={()=>{
                 setActiveTab(state)
             }}>
-            <IoStatsChart size={30} className={active?mainStyles.footerButtonColorActive:mainStyles.footerButtonColor}/>
+            <IoStatsChart size={20} className={active?mainStyles.footerButtonColorActive:mainStyles.footerButtonColor}/>
             </div>
         )
     }
@@ -88,7 +109,7 @@ const FooterButton = ({children,activeTab,setActiveTab,state=0})=>{
             <div className={active?mainStyles.footerButtonActive:mainStyles.footerButton} onClick={()=>{
                 setActiveTab(state)
             }}>
-            <IoSettingsOutline size={40} className={active?mainStyles.footerButtonColorActive:mainStyles.footerButtonColor}/>
+            <GoInfo size={30} className={active?mainStyles.footerButtonColorActive:mainStyles.footerButtonColor}/>
             </div>
         )
     }  

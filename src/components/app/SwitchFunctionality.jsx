@@ -3,23 +3,25 @@ import { useState,useEffect } from "react";
 import switchStyle from "../styles/switch.module.css"
 import Api from "./Api";
 const SwitchFunctionality = ()=>{
-const [state,setState] = useState(false);
+const [state,setState] = useState(localStorage.getItem("switch")==null?false: JSON.parse(localStorage.getItem("switch")).value);
+const [loading,setLoading] = useState(true);
 useEffect(()=>{
-    console.log("2");
+    setLoading(true)
     Api.GetInfo((info)=>{
         console.log(info.result.status.switch);
         setState(info.result.status.switch)
-    });
+        setLoading(false)
+    },Api.defaultPlug);
 },[])
     return(
         <div style={{width:"100%",height:"100%",display:"flex",justifyContent:"center",alignItems:"center"}}>
             <div className={state?switchStyle.containerON:switchStyle.containerOFF} onClick={()=>{
-                Api.Switch(!state);
+                Api.Switch(!state,Api.defaultPlug);
                 setState((prev)=>(!prev))
                 }}>
-                <div className={state?switchStyle.movableON:switchStyle.movableOFF}>
+                {!loading&&<div className={state?switchStyle.movableON:switchStyle.movableOFF}>
                    {state?"ON":"OFF"}
-                </div>
+                </div>}
             </div>
         </div>
     )
